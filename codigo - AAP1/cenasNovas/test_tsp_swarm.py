@@ -1,4 +1,4 @@
-# test_swarm_tsp.py
+# test_tsp_swarm.py
 import random
 from tsp_swarm import TSP_PSO, TSP_ACO
 
@@ -24,17 +24,23 @@ if __name__ == "__main__":
     for nome, coordenadas in instancias.items():
         print(f"\n>>> A INSTANCIAR TESTES PARA: {nome} <<<")
 
-        # 1. Executar PSO
-        pso = TSP_PSO(coordenadas, pop_size=80, max_iter=300, alpha=0.6, beta=0.8)
-        pso_rota, pso_custo, pso_tempo = pso.solve()
+        # 1. Executar PSO com Hiperparâmetros Ótimos (Vizinhança Alta)
+        # alpha=0.7 (fator cognitivo) e beta=0.9 (fator social)
+        pso = TSP_PSO(coordenadas, pop_size=80, max_iter=300, alpha=0.7, beta=0.9)
+
+        # Correção: Adição de '_' para desempacotar o 4º valor (historico_custos)
+        pso_rota, pso_custo, pso_tempo, _ = pso.solve()
 
         print(f"--- Particle Swarm Optimization (PSO) ---")
         print(f"    Melhor Custo (Distância): {pso_custo:.4f}")
         print(f"    Tempo de Execução: {pso_tempo:.4f}s")
 
-        # 2. Executar ACO
-        aco = TSP_ACO(coordenadas, num_formigas=30, max_iter=150, alpha=1.0, beta=4.0, evap_rate=0.3)
-        aco_rota, aco_custo, aco_tempo = aco.solve()
+        # 2. Executar ACO com Hiperparâmetros Ótimos
+        # evap_rate=0.5 validado empiricamente por apresentar a melhor eficiência temporal
+        aco = TSP_ACO(coordenadas, num_formigas=30, max_iter=150, alpha=1.0, beta=4.0, evap_rate=0.5)
+
+        # Correção: Adição de '_' para desempacotar o 4º valor (historico_custos)
+        aco_rota, aco_custo, aco_tempo, _ = aco.solve()
 
         print(f"--- Ant Colony Optimization (ACO) ---")
         print(f"    Melhor Custo (Distância): {aco_custo:.4f}")

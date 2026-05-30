@@ -51,6 +51,9 @@ class TSP_PSO:
         gbest = min(pbest, key=lambda p: self.calcular_custo(p))
         gbest_custo = self.calcular_custo(gbest)
 
+        # Vetor para armazenar a evolução do custo a cada iteração
+        historico_custos = []
+
         for _ in range(self.max_iter):
             for i in range(self.pop_size):
                 # Calcular sequências de swap (Velocidade)
@@ -81,7 +84,10 @@ class TSP_PSO:
                         gbest = list(particulas[i])
                         gbest_custo = custo_atual
 
-        return gbest, gbest_custo, time.time() - start_time
+            # Registar o melhor custo global absoluto no final desta iteração
+            historico_custos.append(gbest_custo)
+
+        return gbest, gbest_custo, time.time() - start_time, historico_custos
 
 
 class TSP_ACO:
@@ -144,6 +150,9 @@ class TSP_ACO:
         melhor_rota = None
         melhor_custo = float('inf')
 
+        # Vetor para armazenar a evolução do custo a cada iteração
+        historico_custos = []
+
         for iteration in range(self.max_iter):
             todas_rotas = []
 
@@ -181,4 +190,7 @@ class TSP_ACO:
                     self.feromonas[(origem, destino)] += deposito
                     self.feromonas[(destino, origem)] += deposito
 
-        return melhor_rota, melhor_custo, time.time() - start_time
+            # Registar o melhor custo global obtido até esta iteração
+            historico_custos.append(melhor_custo)
+
+        return melhor_rota, melhor_custo, time.time() - start_time, historico_custos

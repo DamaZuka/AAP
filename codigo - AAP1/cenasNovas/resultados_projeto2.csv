@@ -1,0 +1,17 @@
+Algoritmo/Problema,Instancia/Dimensão,Metrica_Qualidade,Tempo_Execucao(s),Iteracoes_Nos_Expandidos,Sucesso
+Motor CSP Base (Test),"3 Variaveis (A,B,C)",Solução Válida,0.0000,3,Sim
+CSP N-Queens,N=8,0 Conflitos,0.0014,29,Sim
+CSP N-Queens,N=16,0 Conflitos,0.0305,239,Sim
+CSP N-Queens,N=32,0 Conflitos,0.2084,33,Sim
+CSP N-Queens,N=64,0 Conflitos,7.1491,2004,Sim
+Algoritmo Genetico,N=8,0 Conflitos,0.0323,8,Sim
+Algoritmo Genetico,N=16,0 Conflitos,0.7894,162,Sim
+Algoritmo Genetico,N=32,Sub-ótimo,44.0190,3000,Não (Timeout)
+Algoritmo Genetico,N=64,Sub-ótimo,194.4471,3000,Não (Timeout)
+CSP Mapa Portugal,18 Distritos,3 Cores (Mínimo),0.0007,18,Sim
+TSP - PSO,Pequena (10 Cidades),346.0468 Dist.,0.0796,300,Sim
+TSP - ACO,Pequena (10 Cidades),305.9293 Dist.,0.1821,150,Sim
+TSP - PSO,Média (20 Cidades),628.9445 Dist.,0.1207,300,Sim
+TSP - ACO,Média (20 Cidades),384.1251 Dist.,0.6246,150,Sim
+TSP - PSO,Grande (30 Cidades),987.7259 Dist.,0.1631,300,Sim
+TSP - ACO,Grande (30 Cidades),480.6317 Dist.,1.3468,150,Sim
