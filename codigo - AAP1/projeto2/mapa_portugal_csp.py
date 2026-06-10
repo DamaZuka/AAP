@@ -6,10 +6,10 @@ from csp_engine import CSP, CSPSolver
 def obter_adjacencias_portugal():
     """Retorna o dicionário de distritos vizinhos de Portugal Continental."""
     return {
-        'Viana do Castelo': ['Braga', 'Vila Real'],
+        'Viana do Castelo': ['Braga'],
         'Braga': ['Viana do Castelo', 'Vila Real', 'Porto'],
         'Porto': ['Braga', 'Vila Real', 'Viseu', 'Aveiro'],
-        'Vila Real': ['Viana do Castelo', 'Braga', 'Porto', 'Viseu', 'Bragança'],
+        'Vila Real': ['Braga', 'Porto', 'Viseu', 'Bragança'],
         'Bragança': ['Vila Real', 'Viseu', 'Guarda'],
         'Viseu': ['Porto', 'Vila Real', 'Bragança', 'Guarda', 'Coimbra', 'Aveiro'],
         'Aveiro': ['Porto', 'Viseu', 'Coimbra'],
@@ -46,14 +46,15 @@ def resolver_mapa_portugal(num_cores):
     distritos_adj = obter_adjacencias_portugal()
     variables = list(distritos_adj.keys())
 
-    # Lista de cores disponíveis (K cores)
     lista_cores = [f"Cor_{i + 1}" for i in range(num_cores)]
     domains = {distrito: lista_cores.copy() for distrito in variables}
 
-    # Inicializa CSP
     csp = CSP(variables, domains)
-    funcao_restricao = criar_restricao_coloracao(distritos_adj)
+    for dist, vizinhos in distritos_adj.items():
+        for v in vizinhos:
+            csp.add_neighbor(dist, v)
 
+    funcao_restricao = criar_restricao_coloracao(distritos_adj)
     for var in variables:
         csp.add_constraint(var, funcao_restricao)
 
@@ -94,7 +95,7 @@ if __name__ == "__main__":
                 for distrito, cor in sol.items():
                     writer.writerow([distrito, cor])
             print(f"\n[SUCESSO] Ficheiro '{caminho_csv}' gerado com sucesso!")
-            # =====================================================================
+
 
             break
         else:

@@ -1,13 +1,18 @@
-# csp_engine.py
-
 class CSP:
     def __init__(self, variables, domains):
         self.variables = variables
         self.domains = {var: list(dom) for var, dom in domains.items()}
         self.constraints = {var: [] for var in variables}
+        self.neighbors = {var: [] for var in variables}
 
     def add_constraint(self, variable, constraint_function):
         self.constraints[variable].append(constraint_function)
+
+    def add_neighbor(self, var1, var2):
+        if var2 not in self.neighbors[var1]:
+            self.neighbors[var1].append(var2)
+        if var1 not in self.neighbors[var2]:
+            self.neighbors[var2].append(var1)
 
     def is_consistent(self, variable, assignment):
         for constraint in self.constraints[variable]:
@@ -15,7 +20,24 @@ class CSP:
                 return False
         return True
 
+# Dentro da classe CSPSolver:
+    def _forward_checking(self, variable, value, assignment):
+        removidos = {}
+        # Só se itera sobre os vizinhos diretos
+        for vizinho in self.csp.neighbors[variable]:
+            if vizinho not in assignment:
+                removidos[vizinho] = []
+                valores_historicos = list(self.csp.domains[vizinho])
+                for v_vizinho in valores_historicos:
+                    test_assignment = assignment.copy()
+                    test_assignment[vizinho] = v_vizinho
+                    if not self.csp.is_consistent(vizinho, test_assignment):
+                        self.csp.domains[vizinho].remove(v_vizinho)
+                        removidos[vizinho].append(v_vizinho)
 
+                if not self.csp.domains[vizinho]:
+                    return None
+        return removidos
 class CSPSolver:
     def __init__(self, csp):
         self.csp = csp
