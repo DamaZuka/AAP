@@ -67,6 +67,8 @@ def resolver_mapa_portugal(num_cores):
 
 
 if __name__ == "__main__":
+    import csv
+
     print("=" * 60)
     print("   EXECUTANDO OPÇÃO D: COLORACÃO DO MAPA DE PORTUGAL")
     print("=" * 60)
@@ -83,6 +85,17 @@ if __name__ == "__main__":
             print("\nDistribuição das cores pelos Distritos:")
             for distrito, cor in sorted(sol.items()):
                 print(f"   - {distrito}: {cor}")
+
+
+            caminho_csv = "coloracao_mapa.csv"
+            with open(caminho_csv, mode='w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerow(["Distrito", "Cor_ID"])
+                for distrito, cor in sol.items():
+                    writer.writerow([distrito, cor])
+            print(f"\n[SUCESSO] Ficheiro '{caminho_csv}' gerado com sucesso!")
+            # =====================================================================
+
             break
         else:
             print(f"-> Falha: Não é possível colorir o mapa continental com apenas {k} cores.")

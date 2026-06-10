@@ -141,9 +141,10 @@ class NQueensGeneticCompleto:
 
 if __name__ == "__main__":
     tamanhos_n = [8, 16, 32, 64]
+    num_execucoes = 10  # Número de runs independentes para validade estatística
 
     print("=" * 60)
-    print("   EXECUTANDO AG OPTIMIZADO POR PERMUTAÇÃO")
+    print("   EXECUTANDO AG OPTIMIZADO POR PERMUTAÇÃO (10 RUNS/N)")
     print("=" * 60)
 
     for n in tamanhos_n:
@@ -155,15 +156,38 @@ if __name__ == "__main__":
         else:
             max_g = 3000
 
-        # pop_size ligeiramente maior para tabuleiros complexos ajudar na diversidade
-        ag = NQueensGeneticCompleto(n, pop_size=160, mutation_rate=0.2, max_generations=max_g)
-        melhor, geracoes, tempo, sucesso = ag.executar_evolucao()
-        fit_final = ag.fitness(melhor)
+        sucessos = 0
+        tempos = []
+        geracoes_lista = []
+        melhor_fitness_global = 0
+        max_fit_teorico = (n * (n - 1)) // 2
 
-        if sucesso:
-            print(f"-> Sucesso Absoluto! Solução perfeita obtida na geração {geracoes}.")
+        # Correr o algoritmo múltiplas vezes
+        for i in range(num_execucoes):
+            ag = NQueensGeneticCompleto(n, pop_size=160, mutation_rate=0.2, max_generations=max_g)
+            melhor, geracoes, tempo, sucesso = ag.executar_evolucao()
+            fit_final = ag.fitness(melhor)
+
+            if sucesso:
+                sucessos += 1
+
+            if fit_final > melhor_fitness_global:
+                melhor_fitness_global = fit_final
+
+            tempos.append(tempo)
+            geracoes_lista.append(geracoes)
+
+        # Calcular as métricas médias
+        taxa_sucesso = (sucessos / num_execucoes) * 100
+        tempo_medio = sum(tempos) / num_execucoes
+        geracoes_medias = sum(geracoes_lista) / num_execucoes
+
+        # Imprimir resultados compatíveis com o extrator do CSV
+        if taxa_sucesso > 0:
+            print(f"-> Sucesso com {taxa_sucesso:.1f}% de taxa de convergencia.")
         else:
-            print(f"-> Terminado por limite ({geracoes} ger.). Melhor fitness: {fit_final}/{ag.max_fitness}")
+            print(
+                f"-> Terminado por limite ({taxa_sucesso:.1f}% sucesso). Melhor fitness global: {melhor_fitness_global}/{max_fit_teorico}")
 
-        print(f"   Tempo de Execução: {tempo:.4f} segundos")
-        print(f"   Gerações / Iterações processadas: {geracoes}")
+        print(f"   Tempo de Execução: {tempo_medio:.4f} segundos")
+        print(f"   Gerações / Iterações processadas: {geracoes_medias:.1f}")

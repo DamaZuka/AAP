@@ -54,14 +54,36 @@ for script, descricao in scripts_de_teste:
                               "Sim" if status == "Sucesso" else "Não"])
 
     elif script == "nqueens_genetic.py":
+
+        # Regex corrigida e robusta para capturar o bloco do AG completo
+
         blocos = re.findall(
-            r"A iniciar simulação evolutiva para N = (\d+).+?-> (.*?)\..+?Tempo de Execução: ([\d\.]+) segundos.+?Gerações / Iterações processadas: (\d+)",
+
+            r"A iniciar simulação evolutiva para N = (\d+).+?-> (.*?)\..+?Tempo de Execução: ([\d\.]+) segundos.+?Gerações / Iterações processadas: ([\d\.]+)",
+
             output, re.DOTALL)
+
         for n, msg, t, ger in blocos:
-            sucesso = "Sim" if "Sucesso" in msg else "Não (Timeout)"
-            qualidade = "0 Conflitos" if "Sucesso" in msg else re.search(r"Melhor fitness: ([\d/]+)", msg).group(
-                1) + " Fitness" if re.search(r"Melhor fitness: ([\d/]+)", msg) else "Sub-ótimo"
-            dados_csv.append(["Algoritmo Genetico", f"N={n}", qualidade, t, ger, sucesso])
+
+            # Capturar qualquer percentagem que esteja na mensagem (ex: 100.0%, 50.0%, 0.0%)
+
+            taxa_match = re.search(r"([\d\.]+)%", msg)
+
+            sucesso_str = f"{taxa_match.group(1)}%" if taxa_match else "0.0%"
+
+            # Se a taxa for 0.0%, extrai o melhor fitness alcançado
+
+            if "0.0%" in sucesso_str or "0%" in sucesso_str:
+
+                fit_match = re.search(r"Melhor fitness global: ([\d/]+)", msg)
+
+                qualidade = f"{fit_match.group(1)} Fitness" if fit_match else "Sub-ótimo"
+
+            else:
+
+                qualidade = "0 Conflitos"
+
+            dados_csv.append(["Algoritmo Genético", f"N={n}", qualidade, t, ger, sucesso_str])
 
     elif script == "mapa_portugal_csp.py":
         sucesso_match = re.search(
