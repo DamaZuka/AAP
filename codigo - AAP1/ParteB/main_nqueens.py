@@ -1,9 +1,11 @@
 import time
+import csv
+import os
 from nqueens import NQueensState, hill_climbing, simulated_annealing, tabu_search, stochastic_beam_search, \
     stochastic_hill_climbing
 
 
-def correr_experiencia(algoritmo, nome_algoritmo, n, runs=10):
+def correr_experiencia(algoritmo, nome_algoritmo, n, runs=10, csv_filename="resultados_parte_b.csv"):
     sucessos = 0
     tempos = []
     iteracoes = []
@@ -24,11 +26,37 @@ def correr_experiencia(algoritmo, nome_algoritmo, n, runs=10):
         if estado_final.get_conflicts() == 0:
             sucessos += 1
 
+    # Cálculo das métricas finais
+    taxa_sucesso = (sucessos / runs) * 100
+    tempo_medio = sum(tempos) / runs
+    media_iteracoes = sum(iteracoes) / runs
+    conflitos_medios = sum(conflitos) / runs
+
+    # Impressão na consola
     print(f"--- {nome_algoritmo} ---")
-    print(f"Taxa de sucesso: {(sucessos / runs) * 100:.1f}%")
-    print(f"Tempo médio: {sum(tempos) / runs:.4f}s")
-    print(f"Média iterações: {sum(iteracoes) / runs:.1f}")
-    print(f"Qualidade (conflitos médios): {sum(conflitos) / runs:.2f}\n")
+    print(f"Taxa de sucesso: {taxa_sucesso:.1f}%")
+    print(f"Tempo médio: {tempo_medio:.4f}s")
+    print(f"Média iterações: {media_iteracoes:.1f}")
+    print(f"Qualidade (conflitos médios): {conflitos_medios:.2f}\n")
+
+    # Gravação no ficheiro CSV
+    file_exists = os.path.isfile(csv_filename)
+    with open(csv_filename, mode='a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        # Escrever o cabeçalho apenas se o ficheiro for novo
+        if not file_exists:
+            writer.writerow(
+                ["Algoritmo", "Dimensao_N", "Taxa_Sucesso(%)", "Tempo_Medio(s)", "Media_Iteracoes", "Conflitos_Medios"])
+
+        # Escrever a linha com os resultados da experiência
+        writer.writerow([
+            nome_algoritmo,
+            n,
+            round(taxa_sucesso, 1),
+            round(tempo_medio, 4),
+            round(media_iteracoes, 1),
+            round(conflitos_medios, 2)
+        ])
 
 
 if __name__ == "__main__":

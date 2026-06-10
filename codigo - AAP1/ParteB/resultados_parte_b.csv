@@ -1,0 +1,23 @@
+Algoritmo,Dimensao_N,Taxa_Sucesso(%),Tempo_Medio(s),Media_Iteracoes,Conflitos_Medios
+"Hill Climbing Clássico (N=8, max_iters=1000)",8,10.0,0.0011,2.8,1.4
+"Simulated Annealing (N=8, cool_rate=0.995)",8,40.0,0.0596,1598.7,0.6
+"Tabu Search (N=8, max_iters=1000)",8,100.0,0.0031,9.2,0.0
+"Stochastic Beam Search (N=8, beam_w=3)",8,100.0,0.0072,7.6,0.0
+"Hill Climbing Clássico (N=20, max_iters=500)",20,0.0,0.1194,8.9,2.1
+"Simulated Annealing (N=20, cool_rate=0.95)",20,0.0,0.0409,167.0,8.7
+"Tabu Search (N=20, max_iters=500)",20,90.0,0.995,80.3,0.2
+"Stochastic Beam Search (N=20, beam_w=3)",20,90.0,2.5974,70.1,0.1
+"Hill Climbing Clássico (N=50, max_iters=3)",50,0.0,1.4238,3.0,44.9
+"Stochastic Hill Climbing (N=50, max_iters=200, samples=100)",50,0.0,0.4129,19.6,11.9
+"Simulated Annealing (N=50, cool_rate=0.85)",50,0.0,0.1105,43.0,43.7
+"Tabu Search (N=50, max_iters=3)",50,0.0,1.4514,3.0,41.4
+"Stochastic Beam Search (N=50, beam_w=2)",50,0.0,2.8398,3.0,37.3
+"SA (Temp=100, Rate=0.9)",20,0.0,0.0164,66.0,11.4
+"SA (Temp=500, Rate=0.95)",20,0.0,0.0456,167.0,8.2
+"SA (Temp=1000, Rate=0.99)",20,0.0,0.2426,917.0,3.8
+Tabu Search (Tabu Size=5),20,80.0,1.5004,115.8,0.2
+Tabu Search (Tabu Size=10),20,80.0,1.5594,122.3,0.2
+Tabu Search (Tabu Size=20),20,90.0,1.0697,83.8,0.1
+Stochastic Beam Search (Beam Width=2),20,60.0,5.1741,214.0,0.8
+Stochastic Beam Search (Beam Width=3),20,100.0,0.7308,20.0,0.0
+Stochastic Beam Search (Beam Width=5),20,100.0,0.9641,16.1,0.0
